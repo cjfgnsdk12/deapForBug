@@ -25,7 +25,7 @@ from deap import tools
 from deap import gp
 
 # Initialize Parity problem input and output matrices
-PARITY_FANIN_M = 6
+PARITY_FANIN_M = 3
 PARITY_SIZE_M = 2**PARITY_FANIN_M
 
 inputs = [None] * PARITY_SIZE_M
@@ -75,7 +75,7 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
 def main():
     random.seed(21)
-    pop = toolbox.population(n=300)
+    pop = toolbox.population(n=3)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean)
@@ -83,7 +83,7 @@ def main():
     stats.register("min", numpy.min)
     stats.register("max", numpy.max)
     
-    algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, stats, halloffame=hof)
+    algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 4, stats, halloffame=hof)
     
     return pop, stats, hof
 

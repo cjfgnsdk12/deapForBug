@@ -469,12 +469,16 @@ def compile(expr, pset):
               or return the results produced by evaluating the tree.
     """
     code = str(expr)
+    print("code\n",code)
     if len(pset.arguments) > 0:
         # This section is a stripped version of the lambdify
         # function of SymPy 0.6.6.
         args = ",".join(arg for arg in pset.arguments)
+        print("args\n",args)
         code = "lambda {args}: {code}".format(args=args, code=code)
+        print("code\n",code)
     try:
+        print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
         return eval(code, pset.context, {})
     except MemoryError:
         _, _, traceback = sys.exc_info()

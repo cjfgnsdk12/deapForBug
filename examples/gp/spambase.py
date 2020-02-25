@@ -30,9 +30,10 @@ from deap import gp
 # The dataset is from http://archive.ics.uci.edu/ml/datasets/Spambase
 # This example is a copy of the OpenBEAGLE example :
 # http://beagle.gel.ulaval.ca/refmanual/beagle/html/d2/dbe/group__Spambase.html
-with open("spambase.csv") as spambase:
+with open("/home/hyun/Desktop/Lab/deap/examples/gp/spambase.csv") as spambase:
     spamReader = csv.reader(spambase)
     spam = list(list(float(elem) for elem in row) for row in spamReader)
+    """"""
 
 # defined a new primitive set for strongly typed GP
 pset = gp.PrimitiveSetTyped("MAIN", itertools.repeat(float, 57), bool, "IN")

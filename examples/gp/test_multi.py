@@ -1,17 +1,14 @@
-#    This file is part of EAP.
-#
-#    EAP is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Lesser General Public License as
-#    published by the Free Software Foundation, either version 3 of
-#    the License, or (at your option) any later version.
-#
-#    EAP is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#    GNU Lesser General Public License for more details.
-#
-#    You should have received a copy of the GNU Lesser General Public
-#    License along with EAP. If not, see <http://www.gnu.org/licenses/>.
+import copy
+import math
+import random
+import re
+import sys
+import warnings
+
+from collections import defaultdict, deque
+from functools import partial, wraps
+from inspect import isclass
+from operator import eq, lt
 
 import random
 import operator
@@ -24,20 +21,30 @@ from deap import creator
 from deap import tools
 from deap import gp
 
-import copy
-import math
-import random
-import re
-import sys
-import warnings
+def empty_pri0(out1,out2):
+    return
+def empty_pri1(out1,out2):
+    return
+def empty_pri2(out1,out2):
+    return
+def empty_pri3(out1,out2):
+    return
 
+def empty_ter0(out1,out2):
+    test = 'dict0'
+    return
+def empty_ter1(out1,out2):
+    test = 'dict1'
+    return
+def empty_ter2(out1,out2):
+    test = 'dict2'
+    return
+def empty_ter3(out1,out2):
+    return
+def empty_ter4(out1,out2):
+    return
 
-from collections import defaultdict, deque
-from functools import partial, wraps
-from inspect import isclass
-from operator import eq, lt
-
-def generate(pset, min_, max_, condition, type_=None):
+def generate(pset, min_, max_,condition, type_=None):
     """Generate a Tree as a list of list. The tree is build
     from the root to the leaves, and it stop growing when the
     condition is fulfilled.
@@ -57,21 +64,36 @@ def generate(pset, min_, max_, condition, type_=None):
     if type_ is None:
         type_ = pset.ret
     expr = []
-    height = random.randint(min_, max_)
+    #height = random.randint(min_, max_)
     stack = [(0, type_)]
+    idx_tree=0
+    idx_pri=0
+    idx_ter=0
     while len(stack) != 0:
         depth, type_ = stack.pop()
-        if condition(height, depth):
+        # make terminal node
+        if (tree_arr[idx_tree]=='t')|(condition(max_,depth)):
+            idx_tree+=1
             try:
-                term = random.choice(pset.terminals[type_])
+                if(idx_ter<term_count):
+                    term = pset.terminals[type_][idx_ter]
+                    idx_ter+=1
+                else:
+                    continue
             except IndexError:
                 _, _, traceback = sys.exc_info()
             if isclass(term):
                 term = term()
             expr.append(term)
+        # make primitive node
         else:
+            idx_tree+=1
             try:
-                prim = random.choice(pset.primitives[type_])
+                if(idx_pri<pset.prims_count):
+                    prim = pset.primitives[type_][idx_pri]
+                    idx_pri+=1
+                else:
+                    continue
             except IndexError:
                 _, _, traceback = sys.exc_info()
             expr.append(prim)
@@ -98,50 +120,22 @@ def genFull(pset, min_, max_, type_=None):
 
     return generate(pset, min_, max_, condition, type_)
 
-def if_then_else(condition, out1, out2):
-    return out1 if condition else out2
+pset = gp.PrimitiveSet("MAIN", 0)
+pset.addPrimitive(empty_pri0, 2)
+pset.addPrimitive(empty_pri1, 2)
+pset.addPrimitive(empty_pri2, 2)
+pset.addPrimitive(empty_pri3, 2)
+pset.addTerminal(empty_ter0)
+pset.addTerminal(empty_ter1)
+pset.addTerminal(empty_ter2)
+pset.addTerminal(empty_ter3)
+pset.addTerminal(empty_ter4)
 
-# Initialize Multiplexer problem input and output vectors
-
-MUX_SELECT_LINES = 2
-MUX_IN_LINES = 2 ** MUX_SELECT_LINES
-MUX_TOTAL_LINES = MUX_SELECT_LINES + MUX_IN_LINES
-
-# input : [A0 A1 A2 D0 D1 D2 D3 D4 D5 D6 D7] for a 8-3 mux
-inputs = [[0] * MUX_TOTAL_LINES for i in range(2 ** MUX_TOTAL_LINES)]
-outputs = [None] * (2 ** MUX_TOTAL_LINES)
-
-for i in range(2 ** MUX_TOTAL_LINES):
-    value = i
-    divisor = 2 ** MUX_TOTAL_LINES
-    # Fill the input bits
-    for j in range(MUX_TOTAL_LINES):
-        divisor /= 2
-        if value >= divisor:
-            inputs[i][j] = 1
-            value -= divisor
-    
-    # Determine the corresponding output
-    indexOutput = MUX_SELECT_LINES
-    for j, k in enumerate(inputs[i][:MUX_SELECT_LINES]):
-        indexOutput += k * 2**j
-    outputs[i] = inputs[i][indexOutput]
-
-pset = gp.PrimitiveSet("MAIN", MUX_TOTAL_LINES, "IN")
-pset.addPrimitive(operator.and_, 2)
-pset.addPrimitive(operator.or_, 2)
-pset.addPrimitive(operator.not_, 1)
-pset.addPrimitive(if_then_else, 3)
-pset.addTerminal(1)
-pset.addTerminal(0)
+term_count=5
+tree_arr=['p','p','t','p','t','t','p','t','t']
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
-
-print(pset.primitives[pset.ret][0])
-print(pset.primitives[pset.ret][1])
-print(pset.primitives[pset.ret][2])
-
 
 toolbox = base.Toolbox()
 toolbox.register("expr", genFull, pset=pset, min_=2, max_=4)
@@ -149,12 +143,10 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
-def evalMultiplexer(individual):
-    func = toolbox.compile(expr=individual)
-    print("dir(func)\n",dir(func))
-    return sum(func(*in_) == out for in_, out in zip(inputs, outputs)),
+def eval(individual):
+    return 0,
 
-toolbox.register("evaluate", evalMultiplexer)
+toolbox.register("evaluate", eval)
 toolbox.register("select", tools.selTournament, tournsize=7)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genGrow, min_=0, max_=2)
@@ -176,4 +168,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

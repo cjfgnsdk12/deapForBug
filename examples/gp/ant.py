@@ -144,6 +144,7 @@ class AntSimulator(object):
         self.matrix_row = len(self.matrix)
         self.matrix_col = len(self.matrix[0])
         self.matrix_exc = copy.deepcopy(self.matrix)
+        """"""
 
 ant = AntSimulator(600)
 
@@ -170,8 +171,11 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 def evalArtificialAnt(individual):
     # Transform the tree expression to functionnal Python code
     routine = gp.compile(individual, pset)
+    print("routine\n",routine)
     # Run the generated routine
     ant.run(routine)
+    print("ant.run(routine)\n",ant.run(routine))
+    print("ant.eaten,\n",ant.eaten,)
     return ant.eaten,
 
 toolbox.register("evaluate", evalArtificialAnt)
@@ -183,7 +187,7 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 def main():
     random.seed(69)
     
-    with  open("ant/santafe_trail.txt") as trail_file:
+    with  open("/home/hyun/Desktop/Lab/deap/examples/gp/ant/santafe_trail.txt") as trail_file:
       ant.parse_matrix(trail_file)
     
     pop = toolbox.population(n=300)
