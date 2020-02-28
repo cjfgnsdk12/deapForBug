@@ -9,7 +9,8 @@ info_list=['_nodetype','coord','name'
 def addStack(name,data):
     global stack
     if(str(type(data))=="<class 'str'>"):
-        name+=" "+data
+        name+="' : '"+data+"'"
+        name="'"+name
         stack.append([name,0])
         return
     else:
@@ -20,12 +21,17 @@ def addStack(name,data):
             if info_data==key :
                 node_info.append(key)
                 keys.remove(key)
-    for key in node_info:
-        name+=" "+key+":"+str(data[key])
+    for idx, key in enumerate(node_info):
+        if(idx==0):
+            name+="' : {"+key+":"+str(data[key])
+        else:
+            name+=", "+key+":"+str(data[key])
+    name+="}"
+    name= "'"+name            
     stack.append([name,len(keys)])
     if(len(keys)==0):
         return
-    for key in reversed(keys):
+    for key in keys:
         addStack(key,data[key])
 
 def getStack(data):

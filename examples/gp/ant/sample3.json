@@ -1,0 +1,275 @@
+1.
+​
+{
+                       "_nodetype": "Return",
+                       "coord": ":4:3",
+                       "expr": {
+                           "_nodetype": "BinaryOp",
+                           "coord": ":4:11",
+                           "left": {
+                               "_nodetype": "BinaryOp",
+                               "coord": ":4:11",
+                               "left": {
+                                   "_nodetype": "ID",
+                                   "coord": ":4:11",
+                                   "name": "y"
+                               },
+                               "op": "%",
+                               "right": {
+                                   "_nodetype": "Constant",
+                                   "coord": ":4:13",
+                                   "type": "int",
+                                   "value": "4"
+                               }
+                           },
+                           "op": "==",
+                           "right": {
+                               "_nodetype": "Constant",
+                               "coord": ":4:18",
+                               "type": "int",
+                               "value": "0"
+                           }
+                       }
+                   }
+​
+​
+2.
+​
+{
+                       "_nodetype": "Decl",
+                       "bitsize": null,
+                       "coord": ":9:7",
+                       "funcspec": [],
+                       "init": {
+                           "_nodetype": "Constant",
+                           "coord": ":9:14",
+                           "type": "int",
+                           "value": "1980"
+                       },
+                       "name": "year",
+                       "quals": [],
+                       "storage": [],
+                       "type": {
+                           "_nodetype": "TypeDecl",
+                           "coord": ":9:7",
+                           "declname": "year",
+                           "quals": [],
+                           "type": {
+                               "_nodetype": "IdentifierType",
+                               "coord": ":9:3",
+                               "names": [
+                                   "int"
+                               ]
+                           }
+                       }
+                   }
+​
+3.
+{
+                       "_nodetype": "Decl",
+                       "bitsize": null,
+                       "coord": ":10:7",
+                       "funcspec": [],
+                       "init": null,
+                       "name": "days",
+                       "quals": [],
+                       "storage": [],
+                       "type": {
+                           "_nodetype": "TypeDecl",
+                           "coord": ":10:7",
+                           "declname": "days",
+                           "quals": [],
+                           "type": {
+                               "_nodetype": "IdentifierType",
+                               "coord": ":10:3",
+                               "names": [
+                                   "int"
+                               ]
+                           }
+                       }
+                   }
+​
+4.
+{
+                       "_nodetype": "Assignment",
+                       "coord": ":11:3",
+                       "lvalue": {
+                           "_nodetype": "ID",
+                           "coord": ":11:3",
+                           "name": "days"
+                       },
+                       "op": "=",
+                       "rvalue": {
+                           "_nodetype": "FuncCall",
+                           "args": {
+                               "_nodetype": "ExprList",
+                               "coord": ":11:15",
+                               "exprs": [
+                                   {
+                                       "_nodetype": "ArrayRef",
+                                       "coord": ":11:15",
+                                       "name": {
+                                           "_nodetype": "ID",
+                                           "coord": ":11:15",
+                                           "name": "argv"
+                                       },
+                                       "subscript": {
+                                           "_nodetype": "Constant",
+                                           "coord": ":11:20",
+                                           "type": "int",
+                                           "value": "1"
+                                       }
+                                   }
+                               ]
+                           },
+                           "coord": ":11:10",
+                           "name": {
+                               "_nodetype": "ID",
+                               "coord": ":11:10",
+                               "name": "atoi"
+                           }
+                       }
+                   }
+​
+​
+5.
+{
+                           "_nodetype": "BinaryOp",
+                           "coord": ":12:10",
+                           "left": {
+                               "_nodetype": "ID",
+                               "coord": ":12:10",
+                               "name": "days"
+                           },
+                           "op": ">",
+                           "right": {
+                               "_nodetype": "Constant",
+                               "coord": ":12:17",
+                               "type": "int",
+                               "value": "365"
+                           }
+                       }
+​
+​
+6.
+{
+                                       "_nodetype": "FuncCall",
+                                       "args": {
+                                           "_nodetype": "ExprList",
+                                           "coord": ":14:20",
+                                           "exprs": [
+                                               {
+                                                   "_nodetype": "ID",
+                                                   "coord": ":14:20",
+                                                   "name": "year"
+                                               }
+                                           ]
+                                       },
+                                       "coord": ":14:9",
+                                       "name": {
+                                           "_nodetype": "ID",
+                                           "coord": ":14:9",
+                                           "name": "isLeapYear"
+                                       }
+                                   }
+​
+​
+7.
+​
+{
+                                               "_nodetype": "Assignment",
+                                               "coord": ":24:7",
+                                               "lvalue": {
+                                                   "_nodetype": "ID",
+                                                   "coord": ":24:7",
+                                                   "name": "days"
+                                               },
+                                               "op": "-=",
+                                               "rvalue": {
+                                                   "_nodetype": "Constant",
+                                                   "coord": ":24:15",
+                                                   "type": "int",
+                                                   "value": "365"
+                                               }
+                                           }
+​
+​
+8.
+​
+​
+{
+                                               "_nodetype": "Assignment",
+                                               "coord": ":25:7",
+                                               "lvalue": {
+                                                   "_nodetype": "ID",
+                                                   "coord": ":25:7",
+                                                   "name": "year"
+                                               },
+                                               "op": "+=",
+                                               "rvalue": {
+                                                   "_nodetype": "Constant",
+                                                   "coord": ":25:15",
+                                                   "type": "int",
+                                                   "value": "1"
+                                               }
+                                           }
+​
+​
+9.
+​
+{
+                                                   "_nodetype": "BinaryOp",
+                                                   "coord": ":16:11",
+                                                   "left": {
+                                                       "_nodetype": "ID",
+                                                       "coord": ":16:11",
+                                                       "name": "days"
+                                                   },
+                                                   "op": ">",
+                                                   "right": {
+                                                       "_nodetype": "Constant",
+                                                       "coord": ":16:18",
+                                                       "type": "int",
+                                                       "value": "366"
+                                                   }
+                                               }
+​
+​
+10.
+​
+{
+                                                           "_nodetype": "Assignment",
+                                                           "coord": ":18:9",
+                                                           "lvalue": {
+                                                               "_nodetype": "ID",
+                                                               "coord": ":18:9",
+                                                               "name": "days"
+                                                           },
+                                                           "op": "-=",
+                                                           "rvalue": {
+                                                               "_nodetype": "Constant",
+                                                               "coord": ":18:17",
+                                                               "type": "int",
+                                                               "value": "366"
+                                                           }
+                                                       }
+​
+​
+​
+11.
+{
+                                                           "_nodetype": "Assignment",
+                                                           "coord": ":19:9",
+                                                           "lvalue": {
+                                                               "_nodetype": "ID",
+                                                               "coord": ":19:9",
+                                                               "name": "year"
+                                                           },
+                                                           "op": "+=",
+                                                           "rvalue": {
+                                                               "_nodetype": "Constant",
+                                                               "coord": ":19:17",
+                                                               "type": "int",
+                                                               "value": "1"
+                                                           }
+                                                       }​

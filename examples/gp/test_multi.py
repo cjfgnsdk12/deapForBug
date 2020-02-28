@@ -25,7 +25,7 @@ import astToStack
 
 import json
 
-with open('/home/hyun/Desktop/Lab/deap/examples/gp/sample2.json','r') as json_file:
+with open('/home/hyun/Desktop/Lab/deap/examples/gp/sample1.json','r') as json_file:
     json_data=json.load(json_file)
 
 class psetCl:
@@ -33,7 +33,7 @@ class psetCl:
     def __init__(self,psetInfo,psetPar):
         self.info=psetInfo
         self.parNum=psetPar
-    def ter(self,out1):
+    def ter(self):
         info=self.info
         parNum=self.parNum
         return
@@ -56,44 +56,25 @@ class psetCl:
         
 
 def makePset(psetStack):
+    global tree_arr
+    obList=[]
+    num=-1
     for psetList in psetStack:
-        psetOb=psetCl(psetList[0],psetList[1])
+        num+=1
+        obList.append(psetCl(psetList[0],psetList[1]))
         if(psetList[1]==0):
-            pset.addTerminal(psetOb.ter)
+            tree_arr.append('t')
+            pset.addTerminal(obList[num].ter,name=obList[num])
         else:
+            tree_arr.append('p')
             if(psetList[1]==1):
-                pset.addPrimitive(psetOb.pri1,psetList[1])
+                pset.addPrimitive(obList[num].pri1,psetList[1],name=obList[num])
             elif(psetList[1]==2):
-                pset.addPrimitive(psetOb.pri2,psetList[1])
+                pset.addPrimitive(obList[num].pri2,psetList[1],name=obList[num])
             elif(psetList[1]==3):
-                pset.addPrimitive(psetOb.pri3,psetList[1])
+                pset.addPrimitive(obList[num].pri3,psetList[1],name=obList[num])
             elif(psetList[1]==4):
-                pset.addPrimitive(psetOb.pri4,psetList[1])
-            
-            
-
-def empty_pri0(out1,out2):
-    return
-def empty_pri1(out1,out2):
-    return
-def empty_pri2(out1,out2):
-    return
-def empty_pri3(out1,out2):
-    return
-
-def empty_ter0(out1,out2):
-    test = 'dict0'
-    return
-def empty_ter1(out1,out2):
-    test = 'dict1'
-    return
-def empty_ter2(out1,out2):
-    test = 'dict2'
-    return
-def empty_ter3(out1,out2):
-    return
-def empty_ter4(out1,out2):
-    return
+                pset.addPrimitive(obList[num].pri4,psetList[1],name=obList[num])
 
 def generate(pset, min_, max_,condition, type_=None):
     """Generate a Tree as a list of list. The tree is build
@@ -172,17 +153,8 @@ def genFull(pset, min_, max_, type_=None):
     return generate(pset, min_, max_, condition, type_)
 
 pset = gp.PrimitiveSet("MAIN", 0)
-pset.addPrimitive(empty_pri0, 2)
-pset.addPrimitive(empty_pri1, 2)
-pset.addPrimitive(empty_pri2, 2)
-pset.addPrimitive(empty_pri3, 2)
-pset.addTerminal(empty_ter0)
-pset.addTerminal(empty_ter1)
-pset.addTerminal(empty_ter2)
-pset.addTerminal(empty_ter3)
-pset.addTerminal(empty_ter4)
 
-tree_arr=['p','p','t','p','t','t','p','t','t']
+tree_arr=[]
 
 psetStack=astToStack.getStack(json_data)
 makePset(psetStack)
