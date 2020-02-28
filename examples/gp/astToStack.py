@@ -1,6 +1,34 @@
 import json
 
-with open('/home/hyun/Desktop/Lab/deap/examples/gp/sample.json','r') as json_file:
-    json_data=json.load(json_file)
+stack=[]
 
-print(json_data['expr']['left'])
+info_list=['_nodetype','coord','name'
+,'type','value','bitsize','funcspec'
+,'quals','storage','names']
+
+def addStack(name,data):
+    global stack
+    if(str(type(data))=="<class 'str'>"):
+        name+=" "+data
+        stack.append([name,0])
+        return
+    else:
+        keys=[x for x in data.keys()]
+    node_info=[]
+    for info_data in info_list:
+        for key in keys:
+            if info_data==key :
+                node_info.append(key)
+                keys.remove(key)
+    for key in node_info:
+        name+=" "+key+":"+str(data[key])
+    stack.append([name,len(keys)])
+    if(len(keys)==0):
+        return
+    for key in reversed(keys):
+        addStack(key,data[key])
+
+def getStack(data):
+    addStack("main",data)
+    return stack
+

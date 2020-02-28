@@ -1,0 +1,28 @@
+{
+    "_nodetype": "Decl",
+    "bitsize": null,
+    "coord": ":8:7",
+    "funcspec": [],
+    "init": {
+       "_nodetype": "Constant",
+       "coord": ":8:14",
+       "type": "int",
+       "value": "1980"
+    },
+    "name": "year",
+    "quals": [],
+    "storage": [],
+    "type": {
+       "_nodetype": "TypeDecl",
+       "coord": ":8:7",
+       "declname": "year",
+       "quals": [],
+       "type": {
+          "_nodetype": "IdentifierType",
+          "coord": ":8:3",
+          "names": [
+             "int"
+          ]
+       }
+    }
+}

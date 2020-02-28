@@ -21,6 +21,57 @@ from deap import creator
 from deap import tools
 from deap import gp
 
+import astToStack
+
+import json
+
+with open('/home/hyun/Desktop/Lab/deap/examples/gp/sample2.json','r') as json_file:
+    json_data=json.load(json_file)
+
+class psetCl:
+    info=""
+    def __init__(self,psetInfo,psetPar):
+        self.info=psetInfo
+        self.parNum=psetPar
+    def ter(self,out1):
+        info=self.info
+        parNum=self.parNum
+        return
+    def pri1(self,out1):
+        info=self.info
+        parNum=self.parNum
+        return
+    def pri2(self,out1,out2):
+        info=self.info
+        parNum=self.parNum
+        return
+    def pri3(self,out1,out2,out3):
+        info=self.info
+        parNum=self.parNum
+        return
+    def pri4(self,out1,out2,out3,out4):
+        info=self.info
+        parNum=self.parNum
+        return
+        
+
+def makePset(psetStack):
+    for psetList in psetStack:
+        psetOb=psetCl(psetList[0],psetList[1])
+        if(psetList[1]==0):
+            pset.addTerminal(psetOb.ter)
+        else:
+            if(psetList[1]==1):
+                pset.addPrimitive(psetOb.pri1,psetList[1])
+            elif(psetList[1]==2):
+                pset.addPrimitive(psetOb.pri2,psetList[1])
+            elif(psetList[1]==3):
+                pset.addPrimitive(psetOb.pri3,psetList[1])
+            elif(psetList[1]==4):
+                pset.addPrimitive(psetOb.pri4,psetList[1])
+            
+            
+
 def empty_pri0(out1,out2):
     return
 def empty_pri1(out1,out2):
@@ -75,7 +126,7 @@ def generate(pset, min_, max_,condition, type_=None):
         if (tree_arr[idx_tree]=='t')|(condition(max_,depth)):
             idx_tree+=1
             try:
-                if(idx_ter<term_count):
+                if(idx_ter<pset.terms_count):
                     term = pset.terminals[type_][idx_ter]
                     idx_ter+=1
                 else:
@@ -131,8 +182,10 @@ pset.addTerminal(empty_ter2)
 pset.addTerminal(empty_ter3)
 pset.addTerminal(empty_ter4)
 
-term_count=5
 tree_arr=['p','p','t','p','t','t','p','t','t']
+
+psetStack=astToStack.getStack(json_data)
+makePset(psetStack)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", gp.PrimitiveTree, fitness=creator.FitnessMax)
