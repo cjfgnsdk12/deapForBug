@@ -36,16 +36,7 @@ class psetCl:
     def ter(self):
         info=self.info
         parNum=self.parNum
-    def pri1(self,out1):
-        info=self.info
-        parNum=self.parNum
-    def pri2(self,out1,out2):
-        info=self.info
-        parNum=self.parNum
-    def pri3(self,out1,out2,out3):
-        info=self.info
-        parNum=self.parNum
-    def pri4(self,out1,out2,out3,out4):
+    def pri(self):
         info=self.info
         parNum=self.parNum
 
@@ -61,14 +52,8 @@ def makePset(psetStack):
             pset.addTerminal(obList[num].ter,name=obList[num].ter)
         else:
             tree_arr.append('p')
-            if(psetList[1]==1):
-                pset.addPrimitive(obList[num].pri1,psetList[1],name=obList[num].pri1)
-            elif(psetList[1]==2):
-                pset.addPrimitive(obList[num].pri2,psetList[1],name=obList[num].pri2)
-            elif(psetList[1]==3):
-                pset.addPrimitive(obList[num].pri3,psetList[1],name=obList[num].pri3)
-            elif(psetList[1]==4):
-                pset.addPrimitive(obList[num].pri4,psetList[1],name=obList[num].pri4)
+            pset.addPrimitive(obList[num].pri,psetList[1],name=obList[num].pri)
+            
 
 def generate(pset, min_, max_,condition, type_=None):
     """Generate a Tree as a list of list. The tree is build
@@ -191,6 +176,7 @@ def evalFunc(individual):
     print(individual)
     print(individual.index)
     print(dir(individual))
+    print(pset)
     func = toolbox.compile(expr=individual)
     print()
     return 0,
