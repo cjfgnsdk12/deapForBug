@@ -3,6 +3,7 @@ import math
 import random
 import re
 import sys
+import os
 import warnings
 
 from collections import defaultdict, deque
@@ -14,6 +15,8 @@ import random
 import operator
 
 import numpy
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from deap import algorithms
 from deap import base
@@ -27,6 +30,7 @@ import json
 
 with open('/home/hyun/Desktop/Lab/deap/deapForBug/sample1.json','r') as json_file:
     json_data=json.load(json_file)
+
 
 class psetCl:
     info=""
@@ -47,12 +51,13 @@ def makePset(psetStack):
     for psetList in psetStack:
         num+=1
         obList.append(psetCl(psetList[0],psetList[1]))
+        print(obList[num].info)
         if(psetList[1]==0):
             tree_arr.append('t')
-            pset.addTerminal(obList[num].ter,name=obList[num].ter)
+            pset.addTerminal(obList[num].ter,info=obList[num].info,name=obList[num].ter)
         else:
             tree_arr.append('p')
-            pset.addPrimitive(obList[num].pri,psetList[1],name=obList[num].pri)
+            pset.addPrimitive(obList[num].pri,psetList[1],info=obList[num].info,name=obList[num].pri)
             
 
 def generate(pset, min_, max_,condition, type_=None):
@@ -151,11 +156,10 @@ def compile(expr, pset):
         print("args\n",args)
         code = "lambda {args}: {code}".format(args=args, code=code)
         print("code\n",code)
-    try:
-        print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
-        return eval(code, pset.context, {})
-    except MemoryError:
-        _, _, traceback = sys.exc_info()
+
+    print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
+    return eval(code, pset.context, {})
+    
 pset = gp.PrimitiveSet("MAIN", 0)
 
 tree_arr=[]
@@ -173,9 +177,12 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", compile, pset=pset)
 
 def evalFunc(individual):
-    print(individual)
+    print(individual[1])
+    print(individual[2])
+    print(individual[3])
     print(individual.index)
     print(dir(individual))
+    print(dir(individual.root))
     print(pset)
     func = toolbox.compile(expr=individual)
     print()
