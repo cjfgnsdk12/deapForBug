@@ -1,0 +1,20 @@
+{
+    "_nodetype": "FuncCall",
+    "args": {
+        "_nodetype": "ExprList",
+        "coord": ":14:20",
+        "exprs": [
+            {
+                "_nodetype": "ID",
+                "coord": ":14:20",
+                "name": "year"
+            }
+        ]
+    },
+    "coord": ":14:9",
+    "name": {
+        "_nodetype": "ID",
+        "coord": ":14:9",
+        "name": "isLeapYear"
+    }
+}

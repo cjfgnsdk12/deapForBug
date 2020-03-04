@@ -1,0 +1,40 @@
+{
+    "_nodetype": "Assignment",
+    "coord": ":11:3",
+    "lvalue": {
+        "_nodetype": "ID",
+        "coord": ":11:3",
+        "name": "days"
+    },
+    "op": "=",
+    "rvalue": {
+        "_nodetype": "FuncCall",
+        "args": {
+            "_nodetype": "ExprList",
+            "coord": ":11:15",
+            "exprs": [
+                {
+                    "_nodetype": "ArrayRef",
+                    "coord": ":11:15",
+                    "name": {
+                        "_nodetype": "ID",
+                        "coord": ":11:15",
+                        "name": "argv"
+                    },
+                    "subscript": {
+                        "_nodetype": "Constant",
+                        "coord": ":11:20",
+                        "type": "int",
+                        "value": "1"
+                    }
+                }
+            ]
+        },
+        "coord": ":11:10",
+        "name": {
+            "_nodetype": "ID",
+            "coord": ":11:10",
+            "name": "atoi"
+        }
+    }
+}

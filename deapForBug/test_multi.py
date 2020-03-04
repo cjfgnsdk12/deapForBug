@@ -36,24 +36,18 @@ class psetCl:
     def ter(self):
         info=self.info
         parNum=self.parNum
-        return
     def pri1(self,out1):
         info=self.info
         parNum=self.parNum
-        return
     def pri2(self,out1,out2):
         info=self.info
         parNum=self.parNum
-        return
     def pri3(self,out1,out2,out3):
         info=self.info
         parNum=self.parNum
-        return
     def pri4(self,out1,out2,out3,out4):
         info=self.info
         parNum=self.parNum
-        return
-        
 
 def makePset(psetStack):
     global tree_arr
@@ -64,17 +58,17 @@ def makePset(psetStack):
         obList.append(psetCl(psetList[0],psetList[1]))
         if(psetList[1]==0):
             tree_arr.append('t')
-            pset.addTerminal(obList[num].ter,name=obList[num])
+            pset.addTerminal(obList[num].ter,name=obList[num].ter)
         else:
             tree_arr.append('p')
             if(psetList[1]==1):
-                pset.addPrimitive(obList[num].pri1,psetList[1],name=obList[num])
+                pset.addPrimitive(obList[num].pri1,psetList[1],name=obList[num].pri1)
             elif(psetList[1]==2):
-                pset.addPrimitive(obList[num].pri2,psetList[1],name=obList[num])
+                pset.addPrimitive(obList[num].pri2,psetList[1],name=obList[num].pri2)
             elif(psetList[1]==3):
-                pset.addPrimitive(obList[num].pri3,psetList[1],name=obList[num])
+                pset.addPrimitive(obList[num].pri3,psetList[1],name=obList[num].pri3)
             elif(psetList[1]==4):
-                pset.addPrimitive(obList[num].pri4,psetList[1],name=obList[num])
+                pset.addPrimitive(obList[num].pri4,psetList[1],name=obList[num].pri4)
 
 def generate(pset, min_, max_,condition, type_=None):
     """Generate a Tree as a list of list. The tree is build
@@ -152,6 +146,31 @@ def genFull(pset, min_, max_, type_=None):
 
     return generate(pset, min_, max_, condition, type_)
 
+def compile(expr, pset):
+    """Compile the expression *expr*.
+
+    :param expr: Expression to compile. It can either be a PrimitiveTree,
+                 a string of Python code or any object that when
+                 converted into string produced a valid Python code
+                 expression.
+    :param pset: Primitive set against which the expression is compile.
+    :returns: a function if the primitive set has 1 or more arguments,
+              or return the results produced by evaluating the tree.
+    """
+    code = str(expr)
+    print("code\n",code)
+    if len(pset.arguments) > 0:
+        # This section is a stripped version of the lambdify
+        # function of SymPy 0.6.6.
+        args = ",".join(arg for arg in pset.arguments)
+        print("args\n",args)
+        code = "lambda {args}: {code}".format(args=args, code=code)
+        print("code\n",code)
+    try:
+        print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
+        return eval(code, pset.context, {})
+    except MemoryError:
+        _, _, traceback = sys.exc_info()
 pset = gp.PrimitiveSet("MAIN", 0)
 
 tree_arr=[]
@@ -166,12 +185,17 @@ toolbox = base.Toolbox()
 toolbox.register("expr", genFull, pset=pset, min_=2, max_=4)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-toolbox.register("compile", gp.compile, pset=pset)
+toolbox.register("compile", compile, pset=pset)
 
-def eval(individual):
+def evalFunc(individual):
+    print(individual)
+    print(individual.index)
+    print(dir(individual))
+    func = toolbox.compile(expr=individual)
+    print()
     return 0,
 
-toolbox.register("evaluate", eval)
+toolbox.register("evaluate", evalFunc)
 toolbox.register("select", tools.selTournament, tournsize=7)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genGrow, min_=0, max_=2)
@@ -179,7 +203,7 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
 def main():
 #    random.seed(10)
-    pop = toolbox.population(n=3)
+    pop = toolbox.population(n=1)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean)

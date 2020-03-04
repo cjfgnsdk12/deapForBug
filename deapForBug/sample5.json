@@ -1,0 +1,16 @@
+{
+    "_nodetype": "BinaryOp",
+    "coord": ":12:10",
+    "left": {
+        "_nodetype": "ID",
+        "coord": ":12:10",
+        "name": "days"
+    },
+    "op": ">",
+    "right": {
+        "_nodetype": "Constant",
+        "coord": ":12:17",
+        "type": "int",
+        "value": "365"
+    }
+}

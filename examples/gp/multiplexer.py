@@ -98,6 +98,32 @@ def genFull(pset, min_, max_, type_=None):
 
     return generate(pset, min_, max_, condition, type_)
 
+def compile(expr, pset):
+    """Compile the expression *expr*.
+
+    :param expr: Expression to compile. It can either be a PrimitiveTree,
+                 a string of Python code or any object that when
+                 converted into string produced a valid Python code
+                 expression.
+    :param pset: Primitive set against which the expression is compile.
+    :returns: a function if the primitive set has 1 or more arguments,
+              or return the results produced by evaluating the tree.
+    """
+    code = str(expr)
+    print("code\n",code)
+    if len(pset.arguments) > 0:
+        # This section is a stripped version of the lambdify
+        # function of SymPy 0.6.6.
+        args = ",".join(arg for arg in pset.arguments)
+        print("args\n",args)
+        code = "lambda {args}: {code}".format(args=args, code=code)
+        print("code\n",code)
+    try:
+        print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
+        return eval(code, pset.context, {})
+    except MemoryError:
+        _, _, traceback = sys.exc_info()
+
 def if_then_else(condition, out1, out2):
     return out1 if condition else out2
 
@@ -147,7 +173,7 @@ toolbox = base.Toolbox()
 toolbox.register("expr", genFull, pset=pset, min_=2, max_=4)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-toolbox.register("compile", gp.compile, pset=pset)
+toolbox.register("compile", compile, pset=pset)
 
 def evalMultiplexer(individual):
     func = toolbox.compile(expr=individual)

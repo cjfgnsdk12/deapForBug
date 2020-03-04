@@ -1,0 +1,16 @@
+{
+    "_nodetype": "Assignment",
+    "coord": ":25:7",
+    "lvalue": {
+        "_nodetype": "ID",
+        "coord": ":25:7",
+        "name": "year"
+    },
+    "op": "+=",
+    "rvalue": {
+        "_nodetype": "Constant",
+        "coord": ":25:15",
+        "type": "int",
+        "value": "1"
+    }
+}
