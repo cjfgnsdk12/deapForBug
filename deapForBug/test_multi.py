@@ -28,7 +28,7 @@ import astToStack
 
 import json
 
-with open('/home/hyun/Desktop/Lab/deap/deapForBug/sample1.json','r') as json_file:
+with open('/home/hyun/Desktop/Lab/deap/deapForBug/samples/sample1.json','r') as json_file:
     json_data=json.load(json_file)
 
 
@@ -183,6 +183,7 @@ def evalFunc(individual):
         tmpList.append(individual[i].info)
         tmpList.append(individual[i].arity)
         indivStack.append(tmpList)
+    print(indivStack)
     print("break")
     return 0,
 
