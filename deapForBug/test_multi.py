@@ -18,11 +18,11 @@ import numpy
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-from deap import algorithms
-from deap import base
-from deap import creator
-from deap import tools
-from deap import gp
+from deapRevised import algorithms
+from deapRevised import base
+from deapRevised import creator
+from deapRevised import tools
+from deapRevised import gp
 
 import astToStack
 
@@ -183,6 +183,7 @@ def evalFunc(individual):
         tmpList.append(individual[i].info)
         tmpList.append(individual[i].arity)
         indivStack.append(tmpList)
+    print("break")
     return 0,
 
 toolbox.register("evaluate", evalFunc)
