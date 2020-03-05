@@ -25,12 +25,12 @@ from deapRevised import tools
 from deapRevised import gp
 
 import astToStack
+import astToDict
 
 import json
 
 with open('/home/hyun/Desktop/Lab/deap/deapForBug/samples/sample1.json','r') as json_file:
     json_data=json.load(json_file)
-
 
 class psetCl:
     info=""
@@ -59,7 +59,6 @@ def makePset(psetStack):
             tree_arr.append('p')
             pset.addPrimitive(obList[num].pri,psetList[1],info=obList[num].info,name=obList[num].pri)
             
-
 def generate(pset, min_, max_,condition, type_=None):
     """Generate a Tree as a list of list. The tree is build
     from the root to the leaves, and it stop growing when the
@@ -136,35 +135,13 @@ def genFull(pset, min_, max_, type_=None):
 
     return generate(pset, min_, max_, condition, type_)
 
-def compile(expr, pset):
-    """Compile the expression *expr*.
-
-    :param expr: Expression to compile. It can either be a PrimitiveTree,
-                 a string of Python code or any object that when
-                 converted into string produced a valid Python code
-                 expression.
-    :param pset: Primitive set against which the expression is compile.
-    :returns: a function if the primitive set has 1 or more arguments,
-              or return the results produced by evaluating the tree.
-    """
-    code = str(expr)
-    print("code\n",code)
-    if len(pset.arguments) > 0:
-        # This section is a stripped version of the lambdify
-        # function of SymPy 0.6.6.
-        args = ",".join(arg for arg in pset.arguments)
-        print("args\n",args)
-        code = "lambda {args}: {code}".format(args=args, code=code)
-        print("code\n",code)
-
-    print("eval(code, pset.context, )\n",eval(code, pset.context, {}))
-    return eval(code, pset.context, {})
     
 pset = gp.PrimitiveSet("MAIN", 0)
 
 tree_arr=[]
 
-psetStack=astToStack.getStack(json_data)
+#psetStack=astToStack.getStack(json_data)
+psetStack=astToDict.getStack({}) # getStack
 makePset(psetStack)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -184,7 +161,6 @@ def evalFunc(individual):
         tmpList.append(individual[i].arity)
         indivStack.append(tmpList)
     print(indivStack)
-    print("break")
     return 0,
 
 toolbox.register("evaluate", evalFunc)
@@ -195,7 +171,7 @@ toolbox.register("mutate", gp.mutUniform, expr=toolbox.expr_mut, pset=pset)
 
 def main():
 #    random.seed(10)
-    pop = toolbox.population(n=1)
+    pop = toolbox.population(n=10)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean)
