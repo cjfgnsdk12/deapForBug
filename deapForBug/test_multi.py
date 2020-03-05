@@ -51,7 +51,7 @@ def makePset(psetStack):
     for psetList in psetStack:
         num+=1
         obList.append(psetCl(psetList[0],psetList[1]))
-        print(obList[num].info)
+        #print(obList[num].info)
         if(psetList[1]==0):
             tree_arr.append('t')
             pset.addTerminal(obList[num].ter,info=obList[num].info,name=obList[num].ter)
@@ -177,15 +177,12 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", compile, pset=pset)
 
 def evalFunc(individual):
-    print(individual[1])
-    print(individual[2])
-    print(individual[3])
-    print(individual.index)
-    print(dir(individual))
-    print(dir(individual.root))
-    print(pset)
-    func = toolbox.compile(expr=individual)
-    print()
+    indivStack=[]
+    for i in range(individual.__len__()):
+        tmpList=[]
+        tmpList.append(individual[i].info)
+        tmpList.append(individual[i].arity)
+        indivStack.append(tmpList)
     return 0,
 
 toolbox.register("evaluate", evalFunc)
