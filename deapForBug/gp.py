@@ -31,6 +31,37 @@ import json
 
 with open('/home/hyun/Desktop/Lab/deap/deapForBug/samples/sample1.json','r') as json_file:
     json_data=json.load(json_file)
+text = r"""
+int isLeapYear(int y)
+{
+ return (y%4 == 0);
+}
+
+int main(int argc, char *argv[])
+{
+ int year = 1980;
+ int days;
+ days = atoi(argv[1]);
+ while (days > 365)
+ {
+   if (isLeapYear(year))
+   {
+     if (days > 366)
+     {
+       days -= 366;
+       year += 1;
+     }
+   }
+   else
+   {
+     days -= 365;
+     year += 1;
+   }
+ }
+ printf("current year is %d\n", year);
+ return 0;
+}
+"""
 
 class psetCl:
     info=""
@@ -141,7 +172,7 @@ pset = gp.PrimitiveSet("MAIN", 0)
 tree_arr=[]
 
 #psetStack=astToStack.getStack(json_data)
-psetStack=astToDict.getStack({}) # getStack
+psetStack=astToDict.resultStack(text,4) # getStack
 makePset(psetStack)
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
@@ -161,6 +192,9 @@ def evalFunc(individual):
         tmpList.append(individual[i].arity)
         indivStack.append(tmpList)
     print(indivStack)
+    test=astToDict.makeC(text,indivStack,4)
+    print(test)
+    #print("break")
     return 0,
 
 toolbox.register("evaluate", evalFunc)
